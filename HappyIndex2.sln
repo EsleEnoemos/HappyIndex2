@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyIndex2WindowsClient", "HappyIndex2WindowsClient\HappyIndex2WindowsClient.csproj", "{14229711-F023-4F77-848C-FEB9CE76CC2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyIndex2.Common", "HappyIndex2.Common\HappyIndex2.Common.csproj", "{B9E69B06-187B-407F-A908-2B921F1BA803}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyIndexService", "HappyIndexService\HappyIndexService.csproj", "{8A104D27-8817-45F9-B30E-53CAB54D460F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14229711-F023-4F77-848C-FEB9CE76CC2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14229711-F023-4F77-848C-FEB9CE76CC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14229711-F023-4F77-848C-FEB9CE76CC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14229711-F023-4F77-848C-FEB9CE76CC2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9E69B06-187B-407F-A908-2B921F1BA803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9E69B06-187B-407F-A908-2B921F1BA803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9E69B06-187B-407F-A908-2B921F1BA803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9E69B06-187B-407F-A908-2B921F1BA803}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A104D27-8817-45F9-B30E-53CAB54D460F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A104D27-8817-45F9-B30E-53CAB54D460F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A104D27-8817-45F9-B30E-53CAB54D460F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A104D27-8817-45F9-B30E-53CAB54D460F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
