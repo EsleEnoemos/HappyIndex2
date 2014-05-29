@@ -17,11 +17,16 @@ namespace HappyIndexService.Services {
 			}
 		}
 		public object GetData( HttpRequest request ) {
-			WindowsIdentity identity = request.RequestContext.HttpContext.User.Identity as WindowsIdentity;
-
-			User user = new User { Name = identity.Name};
+			WindowsIdentity identity = (WindowsIdentity)request.RequestContext.HttpContext.User.Identity;
+			//string[] a = identity.Name.Split( '\\' );
+			//System.DirectoryServices.DirectoryEntry ADEntry = new System.DirectoryServices.DirectoryEntry( "WinNT://" + a[ 0 ] + "/" + a[ 1 ] );
+			//string Name = ADEntry.Properties[ "FullName" ].Value.ToString();
+			User user = new User { Name = identity.Name };
+			//foreach( string pn in ADEntry.Properties.PropertyNames ) {
+			//	PropertyValueCollection pvs = ADEntry.Properties[ pn ];
+			//	user.Groups.Add( string.Format( "{0} = {1}", pn, pvs != null ? pvs.Value : "null" ) );
+			//}
 			if( identity.Groups != null ) {
-				user.Groups = new List<string>();
 				foreach( IdentityReference g in identity.Groups ) {
 					user.Groups.Add( g.Translate( typeof( NTAccount ) ).Value );
 				}
