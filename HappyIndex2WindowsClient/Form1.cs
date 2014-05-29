@@ -10,11 +10,16 @@ namespace HappyIndex2WindowsClient {
 		}
 
 		private void Form1_Load( object sender, EventArgs e ) {
-			dateTimePicker1.MaxDate = DateTime.Now;
-			splitContainer1.Panel2.Controls.Clear();
-			EmotionControl c = new EmotionControl( new HappyIndex{Date = DateTime.Now.AddDays( -2 )});
-			c.Dock = DockStyle.Fill;
-			splitContainer1.Panel2.Controls.Add( c );
+			//dateTimePicker1.MaxDate = DateTime.Now;
+			//splitContainer1.Panel2.Controls.Clear();
+			//EmotionControl c = new EmotionControl( new HappyIndex{Date = DateTime.Now.AddDays( -2 )});
+			//c.Dock = DockStyle.Fill;
+			//splitContainer1.Panel2.Controls.Add( c );
+		}
+
+		private void button1_Click( object sender, EventArgs e ) {
+			string s = APICaller.GetData<string>( "ping", null );
+			MessageBox.Show( s );
 		}
 	}
 }
