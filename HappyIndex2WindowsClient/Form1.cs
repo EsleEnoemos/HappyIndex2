@@ -18,8 +18,8 @@ namespace HappyIndex2WindowsClient {
 		}
 
 		private void button1_Click( object sender, EventArgs e ) {
-			string s = APICaller.GetData<string>( "ping", null );
-			MessageBox.Show( s );
+			User me = APICaller.GetData<User>( "me", null );
+			MessageBox.Show( me.ToString() );
 		}
 	}
 }
