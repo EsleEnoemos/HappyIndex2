@@ -12,8 +12,11 @@ namespace HappyIndexService.Services {
 				return "A service for testing connectivity";
 			}
 		}
-		public object GetData( HttpRequest request ) {
+		public object Get( HttpRequest request ) {
 			return "pong";
+		}
+		public object Post( HttpRequest request ) {
+			return "post";
 		}
 	}
 }

@@ -47,11 +47,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APICaller.cs" />
+    <Compile Include="Controls\DateSelectorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DateSelectorControl.Designer.cs">
+      <DependentUpon>DateSelectorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EmotionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\EmotionControl.Designer.cs">
       <DependentUpon>EmotionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ProductionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ProductionControl.Designer.cs">
+      <DependentUpon>ProductionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportControlBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SliderControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SliderControl.Designer.cs">
+      <DependentUpon>SliderControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -61,8 +82,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\DateSelectorControl.resx">
+      <DependentUpon>DateSelectorControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\EmotionControl.resx">
       <DependentUpon>EmotionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ProductionControl.resx">
+      <DependentUpon>ProductionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SliderControl.resx">
+      <DependentUpon>SliderControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

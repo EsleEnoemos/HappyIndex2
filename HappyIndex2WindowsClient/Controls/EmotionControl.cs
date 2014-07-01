@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Windows.Forms;
 using HappyIndex2.Common;
 
 namespace HappyIndex2WindowsClient.Controls {
-	public partial class EmotionControl : UserControl {
+	public partial class EmotionControl : ReportControlBase {
 		private HappyIndex hi;
-		public HappyIndex HappyIndex {
+		public override HappyIndex HappyIndex {
 			get {
-				hi.EmotionalIndex = (trackBar1.Value*1.0)/10.0;
+				hi.EmotionalIndex = sliderControl1.Value;
+				hi.EmotionalComment = textBox1.Text;
 				return hi;
 			}
 		}
@@ -31,16 +31,8 @@ namespace HappyIndex2WindowsClient.Controls {
 		#endregion
 
 		private void EmotionControl_Load( object sender, EventArgs e ) {
-			UpdateValue();
 			label2.Text = hi.Date.Date == DateTime.Now.Date ? "How do you feel today?" : string.Format( "How did you feel {0}", hi.Date.ToShortDateString() );
-		}
-
-		private void trackBar1_Scroll( object sender, EventArgs e ) {
-			UpdateValue();
-		}
-
-		private void UpdateValue() {
-			label1.Text = ((trackBar1.Value * 1.0) / 10.0).ToString( "F1" );
+			textBox1.Text = hi.EmotionalComment;
 		}
 	}
 }

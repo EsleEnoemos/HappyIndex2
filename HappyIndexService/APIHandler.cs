@@ -110,7 +110,11 @@ namespace HappyIndexService {
 			if( service == null ) {
 				return;
 			}
-			Serve( context, service.GetData( context.Request ) );
+			if( string.Equals( context.Request.HttpMethod, "POST", StringComparison.OrdinalIgnoreCase ) ) {
+				Serve( context, service.Post( context.Request ) );
+			} else {
+				Serve( context, service.Get( context.Request ) );
+			}
 		}
 		private void Serve( HttpContext context, object data, bool setMaxJsonLength = true ) {
 			HttpResponse res = context.Response;
@@ -139,6 +143,7 @@ namespace HappyIndexService {
 	public interface IService {
 		string ServiceName { get; }
 		string Description { get; }
-		object GetData( HttpRequest request );
+		object Get( HttpRequest request );
+		object Post( HttpRequest request );
 	}
 }

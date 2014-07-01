@@ -26,7 +26,7 @@ namespace HappyIndex2WindowsClient {
 		private static string _remote;
 		#endregion
 
-		public static T GetData<T>( string service, NameValueCollection parameters ) {
+		public static T GetData<T>( string service, NameValueCollection parameters = null ) {
 			string url = string.Format( "{0}{1}", Remote, service );
 			if( parameters != null ) {
 				List<string> parms = new List<string>();
@@ -45,6 +45,36 @@ namespace HappyIndex2WindowsClient {
 					wc.UseDefaultCredentials = true;
 					string res = wc.DownloadString( url );
 					JavaScriptSerializer js = new JavaScriptSerializer();
+					T t = js.Deserialize<T>( res );
+					return t;
+				} catch( WebException ex ) {
+					if( ex.Response != null ) {
+						ex.Response.Close();
+						ex.Response.Dispose();
+					}
+					throw;
+				}
+			}
+		}
+		public static T PostData<T,T2>( string service, T2 postData, NameValueCollection parameters = null ) {
+			string url = string.Format( "{0}{1}", Remote, service );
+			if( parameters != null ) {
+				List<string> parms = new List<string>();
+				foreach( string key in parameters.AllKeys ) {
+					string[] values = parameters.GetValues( key ) ?? new string[ 0 ];
+					foreach( string value in values ) {
+						parms.Add( string.Format( "{0}={1}", key, value ) );
+					}
+				}
+				if( parms.Count > 0 ) {
+					url = string.Format( "{0}?{1}", url, string.Join( "&", parms ) );
+				}
+			}
+			using( WebClient wc = new WebClient() ) {
+				try {
+					wc.UseDefaultCredentials = true;
+					JavaScriptSerializer js = new JavaScriptSerializer();
+					string res = wc.UploadString( url, js.Serialize( postData ) );
 					T t = js.Deserialize<T>( res );
 					return t;
 				} catch( WebException ex ) {

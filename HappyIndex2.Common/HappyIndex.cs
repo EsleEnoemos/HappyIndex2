@@ -2,6 +2,17 @@
 
 namespace HappyIndex2.Common {
 	public class HappyIndex {
+		#region public int ID
+		/// <summary>
+		/// Get/Sets the ID of the HappyIndex
+		/// </summary>
+		/// <value></value>
+		public int ID {
+			get { return _iD; }
+			set { _iD = value; }
+		}
+		private int _iD;
+		#endregion
 		#region public DateTime Date
 		/// <summary>
 		/// Get/Sets the Date of the HappyIndex

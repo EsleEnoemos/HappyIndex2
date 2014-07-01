@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.DirectoryServices;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using System.Web;
 using HappyIndex2.Common;
 
@@ -16,12 +14,17 @@ namespace HappyIndexService.Services {
 				return "Information about you";
 			}
 		}
-		public object GetData( HttpRequest request ) {
+		public object Get( HttpRequest request ) {
 			WindowsIdentity identity = (WindowsIdentity)request.RequestContext.HttpContext.User.Identity;
+			if( identity == null || identity.User == null ) {
+				return null;
+			}
 			//string[] a = identity.Name.Split( '\\' );
 			//System.DirectoryServices.DirectoryEntry ADEntry = new System.DirectoryServices.DirectoryEntry( "WinNT://" + a[ 0 ] + "/" + a[ 1 ] );
 			//string Name = ADEntry.Properties[ "FullName" ].Value.ToString();
 			User user = new User { Name = identity.Name };
+			//SecurityIdentifier sid = identity.User.AccountDomainSid;
+			//sid.Value;
 			//foreach( string pn in ADEntry.Properties.PropertyNames ) {
 			//	PropertyValueCollection pvs = ADEntry.Properties[ pn ];
 			//	user.Groups.Add( string.Format( "{0} = {1}", pn, pvs != null ? pvs.Value : "null" ) );
@@ -33,6 +36,9 @@ namespace HappyIndexService.Services {
 			}
 
 			return user;
+		}
+		public object Post( HttpRequest request ) {
+			return null;
 		}
 		//private string uEmail( string uid ) {
 		//	DirectorySearcher dirSearcher = new DirectorySearcher();
