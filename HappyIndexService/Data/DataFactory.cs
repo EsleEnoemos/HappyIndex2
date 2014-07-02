@@ -32,7 +32,7 @@ namespace HappyIndexService.Data {
 			using( DBCommand cmd = new DBCommand( Con, CommandType.Text ) ) {
 				cmd.CommandText = "SELECT * FROM HappyIndexes WHERE [SID] = @sid AND [Date] = @date";
 				cmd.AddWithValue( "@sid", sid );
-				cmd.AddWithValue( "@date", date.ToString( "yyyy-MM-dd" ) );
+				cmd.AddWithValue( "@date", date.Format() );
 				if( cmd.Read() ) {
 					return new HappyIndex {
 						ID = cmd.GetInt( "HappyIndex_ID" ),
@@ -52,7 +52,7 @@ namespace HappyIndexService.Data {
 				cmd.CommandText = "UpdateHappyIndex";
 				SqlParameter id = cmd.Add( "@HappyIndex_ID", SqlDbType.Int, ParameterDirection.InputOutput, hi.ID );
 				cmd.AddWithValue( "@SID", sid );
-				cmd.AddWithValue( "@Date", hi.Date.ToString( "yyyy-MM-dd" ) );
+				cmd.AddWithValue( "@Date", hi.Date.Format() );
 				cmd.AddWithValue( "@EmotionalIndex", hi.EmotionalIndex );
 				cmd.AddWithValue( "@EmotionalComment", Z( hi.EmotionalComment ) );
 				cmd.AddWithValue( "@ProductivityIndex", hi.ProductivityIndex );

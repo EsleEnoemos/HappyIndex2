@@ -50,6 +50,7 @@
 			this.slProduction.Name = "slProduction";
 			this.slProduction.Size = new System.Drawing.Size(618, 64);
 			this.slProduction.TabIndex = 5;
+			this.slProduction.Value = 1D;
 			// 
 			// label1
 			// 
@@ -77,6 +78,7 @@
 			this.slMotivation.Name = "slMotivation";
 			this.slMotivation.Size = new System.Drawing.Size(618, 64);
 			this.slMotivation.TabIndex = 7;
+			this.slMotivation.Value = 1D;
 			// 
 			// textBox1
 			// 

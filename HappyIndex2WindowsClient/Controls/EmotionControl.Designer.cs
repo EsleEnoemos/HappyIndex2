@@ -60,6 +60,7 @@
 			this.sliderControl1.Name = "sliderControl1";
 			this.sliderControl1.Size = new System.Drawing.Size(605, 64);
 			this.sliderControl1.TabIndex = 4;
+			this.sliderControl1.Value = 1D;
 			// 
 			// EmotionControl
 			// 

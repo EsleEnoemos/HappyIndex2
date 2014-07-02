@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Script.Serialization;
 
 namespace HappyIndex2.Common {
 	public class HappyIndex {
@@ -18,6 +19,7 @@ namespace HappyIndex2.Common {
 		/// Get/Sets the Date of the HappyIndex
 		/// </summary>
 		/// <value></value>
+		[ScriptIgnore]
 		public DateTime Date {
 			get { return _date; }
 			set { _date = value; }
@@ -45,6 +47,22 @@ namespace HappyIndex2.Common {
 			set { _emotionalComment = value; }
 		}
 		private string _emotionalComment;
+		#endregion
+		#region public string DateString
+		/// <summary>
+		/// Get/Sets the DateString of the HappyIndex
+		/// </summary>
+		/// <value></value>
+		public string DateString {
+			get {
+				return Date.Format();
+			}
+			set {
+				DateTime d;
+				DateTime.TryParse( value, out d );
+				Date = d;
+			}
+		}
 		#endregion
 
 		#region public double ProductivityIndex

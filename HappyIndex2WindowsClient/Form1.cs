@@ -31,7 +31,7 @@ namespace HappyIndex2WindowsClient {
 				return;
 			}
 			NameValueCollection parameters = new NameValueCollection();
-			parameters.Add( "date", dc.Value.ToString( "yyyy-MM-dd" ) );
+			parameters.Add( "date", dc.Value.Format() );
 			HappyIndex hi = APICaller.GetData<HappyIndex>( "index", parameters ) ?? new HappyIndex { Date = dc.Value };
 			splitContainer1.Panel2.Controls.Clear();
 			ReportControlBase c;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using HappyIndex2.Common;
 
 namespace HappyIndex2WindowsClient.Controls {
 	public partial class DateSelectorControl : UserControl {
@@ -36,7 +37,7 @@ namespace HappyIndex2WindowsClient.Controls {
 			OnValueChanged( new EventArgs() );
 		}
 		private void UpdateValue() {
-			label1.Text = date.ToString( "yyyy-MM-dd" );
+			label1.Text = date.Format();
 		}
 
 		private void DateSelectorControl_Load( object sender, EventArgs e ) {
@@ -59,5 +60,13 @@ namespace HappyIndex2WindowsClient.Controls {
 			}
 		}
 		#endregion
+
+		private void label1_DoubleClick( object sender, EventArgs e ) {
+			DatePickerDialog f = new DatePickerDialog(Value);
+			if( f.ShowDialog( this ) == DialogResult.OK ) {
+				Value = f.Value;
+				OnValueChanged( new EventArgs() );
+			}
+		}
 	}
 }

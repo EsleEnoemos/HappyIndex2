@@ -31,7 +31,7 @@ namespace HappyIndex2WindowsClient.Controls {
 		#endregion
 
 		private void EmotionControl_Load( object sender, EventArgs e ) {
-			label2.Text = hi.Date.Date == DateTime.Now.Date ? "How do you feel today?" : string.Format( "How did you feel {0}", hi.Date.ToShortDateString() );
+			label2.Text = hi.Date.Date == DateTime.Now.Date ? "How do you feel today?" : string.Format( "How did you feel {0}", hi.Date.Format() );
 			textBox1.Text = hi.EmotionalComment;
 		}
 	}
