@@ -45,11 +45,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox1.HideSelection = false;
-			this.textBox1.Location = new System.Drawing.Point(0, 99);
+			this.textBox1.Location = new System.Drawing.Point(0, 70);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
 			this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.textBox1.Size = new System.Drawing.Size(608, 149);
+			this.textBox1.Size = new System.Drawing.Size(608, 178);
 			this.textBox1.TabIndex = 3;
 			// 
 			// sliderControl1
@@ -58,7 +58,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.sliderControl1.Location = new System.Drawing.Point(3, 23);
 			this.sliderControl1.Name = "sliderControl1";
-			this.sliderControl1.Size = new System.Drawing.Size(605, 64);
+			this.sliderControl1.Size = new System.Drawing.Size(605, 46);
 			this.sliderControl1.TabIndex = 4;
 			this.sliderControl1.Value = 1D;
 			// 

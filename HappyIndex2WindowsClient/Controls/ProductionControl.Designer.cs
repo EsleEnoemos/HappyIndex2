@@ -46,9 +46,9 @@
 			// 
 			this.slProduction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.slProduction.Location = new System.Drawing.Point(3, 46);
+			this.slProduction.Location = new System.Drawing.Point(3, 43);
 			this.slProduction.Name = "slProduction";
-			this.slProduction.Size = new System.Drawing.Size(618, 64);
+			this.slProduction.Size = new System.Drawing.Size(618, 48);
 			this.slProduction.TabIndex = 5;
 			this.slProduction.Value = 1D;
 			// 
@@ -64,7 +64,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(4, 97);
+			this.label3.Location = new System.Drawing.Point(4, 81);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(56, 13);
 			this.label3.TabIndex = 8;
@@ -74,9 +74,9 @@
 			// 
 			this.slMotivation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.slMotivation.Location = new System.Drawing.Point(3, 116);
+			this.slMotivation.Location = new System.Drawing.Point(3, 100);
 			this.slMotivation.Name = "slMotivation";
-			this.slMotivation.Size = new System.Drawing.Size(618, 64);
+			this.slMotivation.Size = new System.Drawing.Size(618, 45);
 			this.slMotivation.TabIndex = 7;
 			this.slMotivation.Value = 1D;
 			// 
@@ -86,11 +86,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox1.HideSelection = false;
-			this.textBox1.Location = new System.Drawing.Point(4, 186);
+			this.textBox1.Location = new System.Drawing.Point(4, 146);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
 			this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.textBox1.Size = new System.Drawing.Size(608, 82);
+			this.textBox1.Size = new System.Drawing.Size(608, 91);
 			this.textBox1.TabIndex = 9;
 			// 
 			// ProductionControl
@@ -104,7 +104,7 @@
 			this.Controls.Add(this.slProduction);
 			this.Controls.Add(this.label2);
 			this.Name = "ProductionControl";
-			this.Size = new System.Drawing.Size(625, 304);
+			this.Size = new System.Drawing.Size(625, 252);
 			this.Load += new System.EventHandler(this.ProductionControl_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();

@@ -31,9 +31,6 @@ namespace HappyIndexService.Services {
 		}
 		#endregion
 		public object Get( HttpRequest request ) {
-			if( string.Equals( request.HttpMethod, "POST" ) ) {
-				
-			}
 			WindowsIdentity identity = (WindowsIdentity)request.RequestContext.HttpContext.User.Identity;
 			if( identity == null || identity.User == null ) {
 				return null;

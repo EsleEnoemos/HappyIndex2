@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.DirectoryServices;
+using System.Security.Principal;
+using System.Web;
 using HappyIndex2.Common;
 
 namespace HappyIndexService.Data {
@@ -27,11 +31,12 @@ namespace HappyIndexService.Data {
 			}
 		}
 		#endregion
+		private static Dictionary<string,int> userCache = new Dictionary<string, int>();
 
 		public static HappyIndex GetHappyIndex( string sid, DateTime date ) {
 			using( DBCommand cmd = new DBCommand( Con, CommandType.Text ) ) {
-				cmd.CommandText = "SELECT * FROM HappyIndexes WHERE [SID] = @sid AND [Date] = @date";
-				cmd.AddWithValue( "@sid", sid );
+				cmd.CommandText = "SELECT * FROM HappyIndexes WHERE [User_ID] = @User_ID AND [Date] = @date";
+				cmd.AddWithValue( "@User_ID", GetUserID() );
 				cmd.AddWithValue( "@date", date.Format() );
 				if( cmd.Read() ) {
 					return new HappyIndex {
@@ -51,7 +56,7 @@ namespace HappyIndexService.Data {
 			using( DBCommand cmd = new DBCommand( Con, CommandType.StoredProcedure ) ) {
 				cmd.CommandText = "UpdateHappyIndex";
 				SqlParameter id = cmd.Add( "@HappyIndex_ID", SqlDbType.Int, ParameterDirection.InputOutput, hi.ID );
-				cmd.AddWithValue( "@SID", sid );
+				cmd.AddWithValue( "@User_ID", GetUserID() );
 				cmd.AddWithValue( "@Date", hi.Date.Format() );
 				cmd.AddWithValue( "@EmotionalIndex", hi.EmotionalIndex );
 				cmd.AddWithValue( "@EmotionalComment", Z( hi.EmotionalComment ) );
@@ -64,6 +69,28 @@ namespace HappyIndexService.Data {
 				}
 			}
 			return hi;
+		}
+		private static int GetUserID() {
+			WindowsIdentity identity = (WindowsIdentity)HttpContext.Current.Request.RequestContext.HttpContext.User.Identity;
+			if( identity == null || identity.User == null ) {
+				throw new UnauthorizedAccessException();
+			}
+			string sid = identity.User.AccountDomainSid.Value;
+			if( userCache.ContainsKey( sid ) ) {
+				return userCache[ sid ];
+			}
+			string[] a = identity.Name.Split( '\\' );
+			DirectoryEntry entry = new DirectoryEntry( "WinNT://" + a[ 0 ] + "/" + a[ 1 ] );
+			string name = entry.Properties[ "FullName" ].Value.ToString();
+			using( DBCommand cmd = new DBCommand( Con, CommandType.StoredProcedure ) ) {
+				cmd.CommandText = "GetUserID";
+				SqlParameter id = cmd.Add( "@User_ID", SqlDbType.Int, ParameterDirection.InputOutput, DBNull.Value );
+				cmd.AddWithValue( "@SID", sid );
+				cmd.AddWithValue( "@Name", name );
+				cmd.ExecuteNonQuery();
+				userCache[ sid ] = (int)id.Value;
+			}
+			return userCache[ sid ];
 		}
 		private static object Z( object that ) {
 			return that ?? DBNull.Value;
