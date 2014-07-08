@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using HappyIndex2.Common;
 
 namespace HappyIndexService.Data {
 	/// <summary>

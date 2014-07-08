@@ -13,6 +13,7 @@ namespace HappyIndex2WindowsClient.Controls {
 					i = trackBar1.Minimum;
 				}
 				trackBar1.Value = i;
+				UpdateValue();
 			}
 		}
 		public SliderControl() {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -31,12 +30,47 @@ namespace HappyIndexService.Data {
 			}
 		}
 		#endregion
-		private static Dictionary<string,int> userCache = new Dictionary<string, int>();
+		#region public static TeamList Teams
+		/// <summary>
+		/// Gets the Teams of the DataFactory
+		/// </summary>
+		/// <value></value>
+		public static TeamList Teams {
+			get {
+				return _teams ?? (_teams = GetTeams());
+			}
+		}
+		private static TeamList _teams;
+		#endregion
+		private static UserList Users = new UserList();
 
+		#region private static TeamList GetTeams()
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		private static TeamList GetTeams() {
+			TeamList list = new TeamList();
+			using( DBCommand cmd = new DBCommand( Con, CommandType.StoredProcedure ) ) {
+				cmd.CommandText = "GetTeams";
+				while( cmd.Read() ) {
+					list.AddDistinct( new Team { ID = cmd.GetInt( "Team_ID" ), Name = cmd.GetString( "Name" ) } );
+				}
+			}
+			return list;
+		}
+		#endregion
+		#region public static HappyIndex GetHappyIndex( string sid, DateTime date )
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sid"></param>
+		/// <param name="date"></param>
+		/// <returns></returns>
 		public static HappyIndex GetHappyIndex( string sid, DateTime date ) {
 			using( DBCommand cmd = new DBCommand( Con, CommandType.Text ) ) {
 				cmd.CommandText = "SELECT * FROM HappyIndexes WHERE [User_ID] = @User_ID AND [Date] = @date";
-				cmd.AddWithValue( "@User_ID", GetUserID() );
+				cmd.AddWithValue( "@User_ID", GetUser().ID );
 				cmd.AddWithValue( "@date", date.Format() );
 				if( cmd.Read() ) {
 					return new HappyIndex {
@@ -52,11 +86,19 @@ namespace HappyIndexService.Data {
 			}
 			return null;
 		}
+		#endregion
+		#region public static HappyIndex UpdateHappyIndex( string sid, HappyIndex hi )
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sid"></param>
+		/// <param name="hi"></param>
+		/// <returns></returns>
 		public static HappyIndex UpdateHappyIndex( string sid, HappyIndex hi ) {
 			using( DBCommand cmd = new DBCommand( Con, CommandType.StoredProcedure ) ) {
 				cmd.CommandText = "UpdateHappyIndex";
 				SqlParameter id = cmd.Add( "@HappyIndex_ID", SqlDbType.Int, ParameterDirection.InputOutput, hi.ID );
-				cmd.AddWithValue( "@User_ID", GetUserID() );
+				cmd.AddWithValue( "@User_ID", GetUser().ID );
 				cmd.AddWithValue( "@Date", hi.Date.Format() );
 				cmd.AddWithValue( "@EmotionalIndex", hi.EmotionalIndex );
 				cmd.AddWithValue( "@EmotionalComment", Z( hi.EmotionalComment ) );
@@ -70,30 +112,80 @@ namespace HappyIndexService.Data {
 			}
 			return hi;
 		}
-		private static int GetUserID() {
+		#endregion
+		#region public static User GetUser()
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="UnauthorizedAccessException"></exception>
+		public static User GetUser() {
 			WindowsIdentity identity = (WindowsIdentity)HttpContext.Current.Request.RequestContext.HttpContext.User.Identity;
 			if( identity == null || identity.User == null ) {
 				throw new UnauthorizedAccessException();
 			}
 			string sid = identity.User.AccountDomainSid.Value;
-			if( userCache.ContainsKey( sid ) ) {
-				return userCache[ sid ];
+			if( Users.ContainsSID( sid ) ) {
+				return Users[ sid ];
 			}
 			string[] a = identity.Name.Split( '\\' );
 			DirectoryEntry entry = new DirectoryEntry( "WinNT://" + a[ 0 ] + "/" + a[ 1 ] );
 			string name = entry.Properties[ "FullName" ].Value.ToString();
 			using( DBCommand cmd = new DBCommand( Con, CommandType.StoredProcedure ) ) {
-				cmd.CommandText = "GetUserID";
+				cmd.CommandText = "GetUser";
 				SqlParameter id = cmd.Add( "@User_ID", SqlDbType.Int, ParameterDirection.InputOutput, DBNull.Value );
 				cmd.AddWithValue( "@SID", sid );
 				cmd.AddWithValue( "@Name", name );
-				cmd.ExecuteNonQuery();
-				userCache[ sid ] = (int)id.Value;
+				User user = null;
+				while( cmd.Read() ) {
+					if( user == null ) {
+						user = new User { ID = cmd.GetInt( "User_ID" ), Name = cmd.GetString( "Name" ), SID = sid };
+					}
+					if( !cmd.IsDBNull( "Team_ID" ) ) {
+						user.Teams.AddDistinct( Teams.GetByID( cmd.GetInt( "Team_ID" ) ) );
+					}
+				}
+				Users.AddDistinct( user );
 			}
-			return userCache[ sid ];
+			return Users[ sid ];
 		}
+		#endregion
+
+		public static void UpdateTeam( Team t ) {
+			using( DBCommand cmd = new DBCommand( Con, CommandType.StoredProcedure, "UpdateTeam" ) ) {
+				SqlParameter id = cmd.Add( "@Team_ID", SqlDbType.Int, ParameterDirection.InputOutput, t.ID );
+				cmd.AddWithValue( "@Name", t.Name );
+				cmd.ExecuteNonQuery();
+				if( t.ID <= 0 ) {
+					t.ID = (int)id.Value;
+					Teams.AddDistinct( t );
+				}
+			}
+		}
+		public static void UpdateUserTeams( User user ) {
+			using( DBCommand cmd = new DBCommand( Con, CommandType.StoredProcedure, "ClearUsersTeams" ) ) {
+				cmd.AddWithValue( "@User_ID", user.ID );
+				cmd.ExecuteNonQuery();
+				if( user.Teams.Count > 0 ) {
+					cmd.CommandText = "AddUserTeam";
+					SqlParameter t = cmd.Add( "@Team_ID", SqlDbType.Int );
+					foreach( Team team in user.Teams ) {
+						t.Value = team.ID;
+						cmd.ExecuteNonQuery();
+					}
+				}
+			}
+		}
+
+		#region private static object Z( object that )
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="that"></param>
+		/// <returns></returns>
 		private static object Z( object that ) {
 			return that ?? DBNull.Value;
 		}
+		#endregion
 	}
 }

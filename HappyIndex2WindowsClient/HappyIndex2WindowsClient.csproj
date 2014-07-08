@@ -59,6 +59,12 @@
     <Compile Include="Controls\DateSelectorControl.Designer.cs">
       <DependentUpon>DateSelectorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DayControl.Designer.cs">
+      <DependentUpon>DayControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EmotionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -93,6 +99,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\DateSelectorControl.resx">
       <DependentUpon>DateSelectorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DayControl.resx">
+      <DependentUpon>DayControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EmotionControl.resx">
       <DependentUpon>EmotionControl.cs</DependentUpon>

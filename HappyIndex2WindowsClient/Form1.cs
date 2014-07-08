@@ -44,10 +44,14 @@ namespace HappyIndex2WindowsClient {
 			BackgroundCall( "index", delegate( object sndr, RunWorkerCompletedEventArgs e ) {
 				HappyIndex hi = e.Result as HappyIndex ?? new HappyIndex { Date = d };
 				ReportControlBase c;
-				if( hi.ID <= 0 ) {
-					c = new EmotionControl( hi );
+				if( d.Date != DateTime.Now.Date ) {
+					c = new DayControl( hi );
 				} else {
-					c = new ProductionControl( hi );
+					if( hi.ID <= 0 ) {
+						c = new EmotionControl( hi );
+					} else {
+						c = new ProductionControl( hi );
+					}
 				}
 				c.Dock = DockStyle.Fill;
 				splitContainer1.Panel2.Controls.Clear();

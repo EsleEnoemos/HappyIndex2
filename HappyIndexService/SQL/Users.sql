@@ -7,10 +7,10 @@
 		)
 	END
 GO
-if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[GetUserID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-	drop procedure [dbo].[GetUserID]
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[GetUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure [dbo].[GetUser]
 GO
-CREATE PROCEDURE [dbo].[GetUserID]
+CREATE PROCEDURE [dbo].[GetUser]
 @User_ID	INT OUTPUT,
 @SID	VARCHAR(50),
 @Name	VARCHAR(255)
@@ -22,5 +22,8 @@ AS
 				INSERT INTO [Users]( [SID], [Name] ) VALUES( @SID, @Name );
 				SELECT @User_ID = @@IDENTITY;
 			END
+		SELECT Users.*, Teams.Name AS TeamName, Teams.Team_ID FROM Users
+		LEFT JOIN [UserTeams] ON [UserTeams].[User_ID] = [Users].[User_ID]
+		LEFT JOIN [Teams] ON [Teams].[Team_ID] = [UserTeams].[Team_ID];
 	END
 GO
