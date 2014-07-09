@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Net;
+using System.Text;
 using System.Web.Script.Serialization;
 
 namespace HappyIndex2WindowsClient {
@@ -43,6 +44,7 @@ namespace HappyIndex2WindowsClient {
 			using( WebClient wc = new WebClient() ) {
 				try {
 					wc.UseDefaultCredentials = true;
+					wc.Encoding = Encoding.UTF8;
 					string res = wc.DownloadString( url );
 					JavaScriptSerializer js = new JavaScriptSerializer();
 					T t = js.Deserialize<T>( res );
@@ -73,6 +75,7 @@ namespace HappyIndex2WindowsClient {
 			using( WebClient wc = new WebClient() ) {
 				try {
 					wc.UseDefaultCredentials = true;
+					wc.Encoding = Encoding.UTF8;
 					JavaScriptSerializer js = new JavaScriptSerializer();
 					string res = wc.UploadString( url, js.Serialize( postData ) );
 					T t = js.Deserialize<T>( res );

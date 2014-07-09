@@ -8,18 +8,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 
 namespace HappyIndexService {
-	public class APIHandler : IHttpHandler {
-		#region public bool IsReusable
-		/// <summary>
-		/// Gets the IsReusable of the APIHandler
-		/// </summary>
-		/// <value></value>
-		public bool IsReusable {
-			get {
-				return false;
-			}
-		}
-		#endregion
+	public class APIHandler : BaseHandler {
 		#region public static List<IService> Methods
 		/// <summary>
 		/// Gets the Methods of the APIHandler
@@ -92,7 +81,7 @@ namespace HappyIndexService {
 		private static object methodLock = new object();
 		#endregion
 
-		public void ProcessRequest( HttpContext context ) {
+		public override void ProcessRequest( HttpContext context ) {
 			string path = context.Request.Path;
 			if( string.IsNullOrEmpty( path ) ) {
 				return;

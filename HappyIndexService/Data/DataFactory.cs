@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.DirectoryServices;
+using System.IO;
 using System.Security.Principal;
 using System.Web;
 using HappyIndex2.Common;
@@ -95,10 +97,11 @@ namespace HappyIndexService.Data {
 		/// <param name="hi"></param>
 		/// <returns></returns>
 		public static HappyIndex UpdateHappyIndex( string sid, HappyIndex hi ) {
+			User user = GetUser();
 			using( DBCommand cmd = new DBCommand( Con, CommandType.StoredProcedure ) ) {
 				cmd.CommandText = "UpdateHappyIndex";
 				SqlParameter id = cmd.Add( "@HappyIndex_ID", SqlDbType.Int, ParameterDirection.InputOutput, hi.ID );
-				cmd.AddWithValue( "@User_ID", GetUser().ID );
+				cmd.AddWithValue( "@User_ID", user.ID );
 				cmd.AddWithValue( "@Date", hi.Date.Format() );
 				cmd.AddWithValue( "@EmotionalIndex", hi.EmotionalIndex );
 				cmd.AddWithValue( "@EmotionalComment", Z( hi.EmotionalComment ) );
@@ -109,6 +112,24 @@ namespace HappyIndexService.Data {
 				if( hi.ID <= 0 ) {
 					hi.ID = (int)id.Value;
 				}
+			}
+			foreach( Team t in user.Teams ) {
+				string filenameFilter = string.Format( "{0}_Teams_{1}_*", hi.Date.Year, t.ID );
+				FileInfo[] files = GraphicsHandler.SaveDir.GetFiles( filenameFilter );
+				for( int i = 0; i < files.Length; i++ ) {
+					FileInfo file = files[ i ];
+					try {
+						file.Delete();
+					} catch { }
+				}
+			}
+			string userFilenameFilter = string.Format( "{0}_User_{1}_*", hi.Date.Year, user.ID );
+			FileInfo[] userFiles = GraphicsHandler.SaveDir.GetFiles( userFilenameFilter );
+			for( int i = 0; i < userFiles.Length; i++ ) {
+				FileInfo file = userFiles[ i ];
+				try {
+					file.Delete();
+				} catch { }
 			}
 			return hi;
 		}
@@ -176,6 +197,46 @@ namespace HappyIndexService.Data {
 				}
 			}
 		}
+		public static List<HappyIndex> GetTeamStatistics( int teamID, DateTime fromDate, DateTime toDate ) {
+			List<HappyIndex> list = new List<HappyIndex>();
+			using( DBCommand cmd = new DBCommand( Con, CommandType.Text ) ) {
+				cmd.CommandText = string.Format( @"select
+	HappyIndexes.Date,
+	AVG( HappyIndexes.EmotionalIndex ) AS EmotionalIndex, 
+	AVG( HappyIndexes.ProductivityIndex ) AS ProductivityIndex, 
+	AVG( HappyIndexes.MotivationIndex ) AS MotivationIndex
+FROM HappyIndexes
+INNER JOIN UserTeams ON UserTeams.User_ID = HappyIndexes.User_ID
+INNER JOIN Teams ON Teams.Team_ID = UserTeams.Team_ID
+WHERE Teams.Team_ID = {0} AND HappyIndexes.Date >= '{1}' AND HappyIndexes.Date <= '{2}'
+GROUP BY HappyIndexes.Date", teamID, fromDate.Format(), toDate.Format() );
+				while( cmd.Read() ) {
+					list.Add( new HappyIndex {
+						Date = cmd.GetDateTime( "Date" ),
+						EmotionalIndex = cmd.GetDouble( "EmotionalIndex" ),
+						ProductivityIndex = cmd.GetDouble( "ProductivityIndex" ),
+						MotivationIndex = cmd.GetDouble( "MotivationIndex" )
+					} );
+				}
+				list.Sort(delegate(HappyIndex x, HappyIndex y) { return x.Date.CompareTo( y.Date ); });
+			}
+			return list;
+		}
+		public static List<HappyIndex> GetUserIndexes( int userID, DateTime fromDate, DateTime toDate ) {
+			List<HappyIndex> list = new List<HappyIndex>();
+			using( DBCommand cmd = new DBCommand( Con, CommandType.Text ) ) {
+				cmd.CommandText = string.Format( "SELECT * FROM HappyIndexes WHERE [User_ID] = {0} AND HappyIndexes.Date >= '{1}' AND HappyIndexes.Date <= '{2}'", userID, fromDate.Format(), toDate.Format() );
+				while( cmd.Read() ) {
+					list.Add( new HappyIndex {
+						Date = cmd.GetDateTime( "Date" ),
+						EmotionalIndex = cmd.GetDouble( "EmotionalIndex" ),
+						ProductivityIndex = cmd.GetDouble( "ProductivityIndex" ),
+						MotivationIndex = cmd.GetDouble( "MotivationIndex" )
+					} );
+				}
+			}
+			return list;
+		}
 
 		#region private static object Z( object that )
 		/// <summary>
@@ -184,6 +245,11 @@ namespace HappyIndexService.Data {
 		/// <param name="that"></param>
 		/// <returns></returns>
 		private static object Z( object that ) {
+			if( that is string ) {
+				if( that != null && string.IsNullOrEmpty( that.ToString() ) ) {
+					return DBNull.Value;
+				}
+			}
 			return that ?? DBNull.Value;
 		}
 		#endregion
