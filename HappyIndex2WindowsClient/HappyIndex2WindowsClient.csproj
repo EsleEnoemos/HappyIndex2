@@ -86,6 +86,12 @@
     <Compile Include="Controls\SliderControl.Designer.cs">
       <DependentUpon>SliderControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TopBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TopBar.designer.cs">
+      <DependentUpon>TopBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SliderControl.resx">
       <DependentUpon>SliderControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TopBar.resx">
+      <DependentUpon>TopBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

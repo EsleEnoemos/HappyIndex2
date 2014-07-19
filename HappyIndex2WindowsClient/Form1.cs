@@ -10,13 +10,15 @@ namespace HappyIndex2WindowsClient {
 	public partial class Form1 : Form {
 		public Form1() {
 			InitializeComponent();
-		}
-
-		private void Form1_Load( object sender, EventArgs e ) {
 			DateSelectorControl dc = new DateSelectorControl();
 			dc.Dock = DockStyle.Fill;
 			splitContainer1.Panel1.Controls.Add( dc );
 			dc.ValueChanged += DcOnValueChanged;
+			topBar1.AutoHideOnClose = true;
+			topBar1.EnableFormMove = true;
+		}
+
+		private void Form1_Load( object sender, EventArgs e ) {
 			LoadControl( DateTime.Now );
 			//HappyIndex hi = APICaller.GetData<HappyIndex>( "index" ) ?? new HappyIndex { Date = DateTime.Now };
 			//ReportControlBase c;
@@ -86,6 +88,18 @@ namespace HappyIndex2WindowsClient {
 			public string Service;
 			public NameValueCollection Parameters;
 			public Func<string, NameValueCollection, HappyIndex> ServiceCall;
+		}
+
+		private void exitToolStripMenuItem_Click( object sender, EventArgs e ) {
+			Close();
+		}
+
+		private void notifyIcon1_MouseDoubleClick( object sender, MouseEventArgs e ) {
+			if( Visible ) {
+				topBar1.SlideDown();
+				return;
+			}
+			topBar1.SlideUp();
 		}
 	}
 }

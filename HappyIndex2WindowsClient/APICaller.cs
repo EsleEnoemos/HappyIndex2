@@ -27,7 +27,7 @@ namespace HappyIndex2WindowsClient {
 		private static string _remote;
 		#endregion
 
-		public static T GetData<T>( string service, NameValueCollection parameters = null ) {
+		public static T GetData<T>( string service, NameValueCollection parameters = null ) where T : new() {
 			string url = string.Format( "{0}{1}", Remote, service );
 			if( parameters != null ) {
 				List<string> parms = new List<string>();
@@ -54,9 +54,10 @@ namespace HappyIndex2WindowsClient {
 						ex.Response.Close();
 						ex.Response.Dispose();
 					}
-					throw;
+					//throw;
 				}
 			}
+			return new T();
 		}
 		public static T PostData<T,T2>( string service, T2 postData, NameValueCollection parameters = null ) {
 			string url = string.Format( "{0}{1}", Remote, service );
