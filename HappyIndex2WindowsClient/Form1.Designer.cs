@@ -28,9 +28,10 @@
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.btnReport = new System.Windows.Forms.Button();
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-			this.topBar1 = new HappyIndex2WindowsClient.Controls.TopBar();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.topBar1 = new HappyIndex2WindowsClient.Controls.TopBar();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
@@ -64,9 +65,31 @@
 			// 
 			this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
 			this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-			this.notifyIcon1.Text = "notifyIcon1";
+			this.notifyIcon1.Text = "Happy Index 2";
 			this.notifyIcon1.Visible = true;
 			this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+			// 
+			// contextMenuStrip1
+			// 
+			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem,
+            this.openToolStripMenuItem});
+			this.contextMenuStrip1.Name = "contextMenuStrip1";
+			this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+			// 
+			// exitToolStripMenuItem
+			// 
+			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.exitToolStripMenuItem.Text = "Exit";
+			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+			// 
+			// openToolStripMenuItem
+			// 
+			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.openToolStripMenuItem.Text = "Hide";
+			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
 			// topBar1
 			// 
@@ -78,20 +101,6 @@
 			this.topBar1.Name = "topBar1";
 			this.topBar1.Size = new System.Drawing.Size(570, 23);
 			this.topBar1.TabIndex = 2;
-			// 
-			// contextMenuStrip1
-			// 
-			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItem});
-			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(93, 26);
-			// 
-			// exitToolStripMenuItem
-			// 
-			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
-			this.exitToolStripMenuItem.Text = "Exit";
-			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
 			// Form1
 			// 
@@ -122,6 +131,7 @@
 		private System.Windows.Forms.NotifyIcon notifyIcon1;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
 	}
 }
 

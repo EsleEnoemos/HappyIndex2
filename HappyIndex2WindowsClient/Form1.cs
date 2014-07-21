@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using HappyIndex2.Common;
 using HappyIndex2WindowsClient.Controls;
+using Microsoft.Win32;
 
 namespace HappyIndex2WindowsClient {
 	public partial class Form1 : Form {
@@ -16,6 +17,10 @@ namespace HappyIndex2WindowsClient {
 			dc.ValueChanged += DcOnValueChanged;
 			topBar1.AutoHideOnClose = true;
 			topBar1.EnableFormMove = true;
+			SystemEvents.SessionEnding += SystemEventsOnSessionEnding;
+		}
+		private void SystemEventsOnSessionEnding( object sender, SessionEndingEventArgs e ) {
+			SystemEvents.SessionEnding -= SystemEventsOnSessionEnding;
 		}
 
 		private void Form1_Load( object sender, EventArgs e ) {
@@ -95,11 +100,19 @@ namespace HappyIndex2WindowsClient {
 		}
 
 		private void notifyIcon1_MouseDoubleClick( object sender, MouseEventArgs e ) {
+			ToggleVisible();
+		}
+		private void ToggleVisible() {
 			if( Visible ) {
 				topBar1.SlideDown();
+				openToolStripMenuItem.Text = "Show";
 				return;
 			}
 			topBar1.SlideUp();
+			openToolStripMenuItem.Text = "Hide";
+		}
+		private void openToolStripMenuItem_Click( object sender, EventArgs e ) {
+			ToggleVisible();
 		}
 	}
 }

@@ -30,7 +30,9 @@
 			// 
 			this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnClose.BackColor = System.Drawing.Color.DimGray;
+			this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
 			this.btnClose.FlatAppearance.BorderSize = 0;
+			this.btnClose.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray;
 			this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DimGray;
 			this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btnClose.Location = new System.Drawing.Point(479, 0);
